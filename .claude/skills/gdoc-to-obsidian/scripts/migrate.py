@@ -132,7 +132,10 @@ def preprocess(src):
         if bold: t = '<strong>' + t + '</strong>'
         st = []
         if fg and fg != '#000000': st.append('color:' + fg)
-        if bg and bg not in DARKBG and bg != '#ffffff': st.append('background-color:' + bg)
+        if bg and bg not in DARKBG and bg != '#ffffff':
+            st.append('background-color:' + bg)
+            if not (fg and fg != '#000000'):
+                st.append('color:#111827')   # dark text so light highlights read on dark theme
         if st: t = '<span style="' + ';'.join(st) + '">' + t + '</span>'
         return t
     prev = None
@@ -215,11 +218,15 @@ def postprocess(s, slug):
     while res and res[-1] == '': res.pop()
     return '\n'.join(res) + '\n'
 
-def slugify(t):
-    t = re.sub(r'\[([^\]]*)\]\([^)]*\)', r'\1', t)            # drop link urls
+def fname(t):
+    # Sentence-case, human-readable, filesystem/Obsidian-safe filename from a heading.
+    t = re.sub(r'\[([^\]]*)\]\([^)]*\)', r'\1', t)            # keep link text, drop urls
     t = re.sub(r'<[^>]+>', '', t).replace('**', '').replace('==', '')
-    t = re.sub(r'[^a-z0-9]+', '-', t.lower()).strip('-')
-    return (t[:40].strip('-') or 'section')
+    t = re.sub(r'[\\/:*?"<>|#^\[\]]+', ' ', t)               # chars illegal in fs / wikilinks
+    t = re.sub(r'\s+', ' ', t).strip(' .-')
+    if not t: return 'Section'
+    if t[0].islower(): t = t[0].upper() + t[1:]              # ensure leading capital
+    return t[:60].strip(' .-')
 
 def split_and_write(md, slug, vault):
     srcdir = f'{vault}/sources/{slug}'
@@ -247,22 +254,23 @@ def split_and_write(md, slug, vault):
         for t, body in months[mo]:
             o += [f'## {t}', trim('\n'.join(body)), '']
         open(f'{srcdir}/{mo}.md', 'w').write('\n'.join(o).rstrip() + '\n')
+    title = slug[0].upper() + slug[1:]        # Sentence-case index/source name
     topic_files = []
-    used = set(months.keys()) | {slug}        # never collide with month files or the index
+    used = set(months.keys()) | {title}       # never collide with month files or the index
     for t, body in topics:
-        sl = slugify(t); base = sl; k = 2
-        while sl in used: sl = f'{base}-{k}'; k += 1
-        used.add(sl)
-        open(f'{srcdir}/{sl}.md', 'w').write(f'# {strip_title(t)}\n\n' + trim('\n'.join(body)).rstrip() + '\n')
-        topic_files.append((sl, strip_title(t)))
-    idx = [f'# {slug}', '',
+        nm = fname(t); base = nm; k = 2
+        while nm in used: nm = f'{base} ({k})'; k += 1
+        used.add(nm)
+        open(f'{srcdir}/{nm}.md', 'w').write(f'# {strip_title(t)}\n\n' + trim('\n'.join(body)).rstrip() + '\n')
+        topic_files.append(nm)
+    idx = [f'# {title}', '',
            f'Imported from a Google Doc. Images in `/assets` (prefixed `{slug}-`).', '',
            '## Daily log', '- ' + ' · '.join(f'[[{mo}]]' for mo in sorted(months, reverse=True)), '',
            '## Topics']
-    idx += [f'- [[{sl}|{ti}]]' for sl, ti in topic_files]
+    idx += [f'- [[{nm}]]' for nm in topic_files]
     if [l for l in rolling if l.strip()]:
         idx += ['', '## Rolling / preamble', '', trim('\n'.join(rolling))]
-    open(f'{srcdir}/{slug}.md', 'w').write('\n'.join(idx).rstrip() + '\n')
+    open(f'{srcdir}/{title}.md', 'w').write('\n'.join(idx).rstrip() + '\n')
     return sorted(months), topic_files
 
 def strip_title(t):
@@ -295,7 +303,7 @@ def main():
     imgs = copy_assets(a.html, a.slug, a.vault)
     print(f"OK -> {a.vault}/sources/{a.slug}/")
     print(f"  months: {months}")
-    print(f"  topics: {[s for s, _ in topics]}")
+    print(f"  topics: {topics}")
     print(f"  images: {imgs} -> {a.vault}/assets/ (prefix {a.slug}-)")
 
 if __name__ == '__main__':

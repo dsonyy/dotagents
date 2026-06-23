@@ -38,9 +38,13 @@ python3 scripts/migrate.py --html <path/to/export.html> --slug <name> --vault <v
 
 Output (flat) under `<vault>/sources/<slug>/`:
 - `YYYY-MM.md` — one per month; dated entries become `## YYYY-MM-DD`.
-- `<topic-slug>.md` — one per non-date top-level `#` section.
-- `<slug>.md` — index linking months + topics + any preamble.
+- `<Topic name>.md` — one per non-date top-level `#` section. Filenames are **Sentence case**,
+  taken from the heading text (real casing preserved; filesystem/wikilink-safe).
+- `<Slug>.md` — index linking months + topics + any preamble (Sentence-cased slug).
 - Images → `<vault>/assets/<slug>-imageN.png`, referenced `![[<slug>-imageN.png]]`.
+
+Filename convention: months stay numeric `YYYY-MM` (sortable); everything else is Sentence
+case for readability. Keep this consistent across imports.
 
 ### 3. Review + group topics (judgment step)
 The script emits **one topic file per top-level `#` heading**, which often over-fragments
@@ -58,7 +62,8 @@ The script emits **one topic file per top-level `#` heading**, which often over-
 **Formatting → Obsidian:**
 - bold/italic/strikethrough → `**`, `*`, `~~`
 - font color → `<span style="color:#hex">…</span>` (Obsidian renders inline HTML)
-- highlight → `==…==` (yellow) or `<span style="background-color:#hex">…</span>` (colored)
+- highlight → `==…==` (yellow) or `<span style="background-color:#hex;color:#111827">…</span>`
+  (colored — dark text is forced so light highlights stay readable on dark themes)
 - code → fenced blocks, **plain** (editor syntax-theme rainbow colors are dropped)
 - links → clean `[text](url)`; images → `![[<slug>-imageN.png]]`
 
