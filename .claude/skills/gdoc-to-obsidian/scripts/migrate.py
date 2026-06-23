@@ -40,6 +40,43 @@ LINKBLUE = {'#1155cc', '#0000ee', '#0000ff', '#1264a3', '#0563c1', '#1a0dab', '#
 MONO = ('courier', 'roboto mono', 'consolas', 'source code', 'mono')
 DARKBG = {'#282c34', '#21252b', '#2f2f2f', '#1e1e1e', '#1d1f21', '#272822', '#011627', '#222222'}
 
+def rebuild_lists(h):
+    # Google Docs encodes nested lists as consecutive sibling <ul>/<ol>, depth in a
+    # `lst-kix_<id>-<level>` class. Rebuild proper nested <ul>/<ol> so pandoc indents right.
+    RUN = re.compile(r'(?:\s*<(?:ul|ol)\b[^>]*>.*?</(?:ul|ol)>)+', re.S)
+    def repl(m):
+        block = m.group(0)
+        items = []  # (level, type, inner_html) in document order
+        for lm in re.finditer(r'<(ul|ol)\b([^>]*)>(.*?)</\1>', block, re.S):
+            typ, cls, inner = lm.group(1), lm.group(2), lm.group(3)
+            lv = re.search(r'lst-kix_\w+-(\d+)', cls)
+            level = int(lv.group(1)) if lv else 0
+            for li in re.finditer(r'<li\b[^>]*>(.*?)</li>', inner, re.S):
+                items.append((level, typ, li.group(1).strip()))
+        if not items:
+            return block
+        out = []; types = []
+        for level, typ, inner in items:
+            level = min(level, len(types))     # clamp: never skip a depth
+            d = len(types) - 1
+            if level > d:
+                for _ in range(d + 1, level + 1):
+                    out.append('<%s>' % typ); types.append(typ)
+            else:
+                out.append('</li>')
+                while len(types) - 1 > level:
+                    out.append('</%s></li>' % types.pop())
+                if types[level] != typ:        # ul<->ol switch at same depth = new sibling list
+                    out.append('</%s>' % types.pop())
+                    out.append('<%s>' % typ); types.append(typ)
+            out.append('<li>' + inner)
+        out.append('</li>')
+        while types:
+            out.append('</%s>' % types.pop())
+            if types: out.append('</li>')
+        return ''.join(out)
+    return RUN.sub(repl, h)
+
 def build_classmap(style):
     props = {}
     for m in re.finditer(r'\.(c\d+)\s*\{([^}]*)\}', style):
@@ -78,6 +115,8 @@ def preprocess(src):
     h = re.sub(r'\sstyle="[^"]*"', '', h)
     h = re.sub(r'\s(?:id|name)="[^"]*"', '', h)
     h = re.sub(r'<a(?![^>]*href)[^>]*>(.*?)</a>', r'\1', h, flags=re.S)
+    h = rebuild_lists(h)        # Google exports nested lists as flat sibling <ul> with
+                               # lst-kix_*-N level classes; rebuild real nesting for pandoc.
 
     def plain(frag):
         t = re.sub(r'<br\s*/?>', '\n', frag)
