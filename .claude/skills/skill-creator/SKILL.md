@@ -208,7 +208,8 @@ Skill creation involves these steps:
 3. Initialize the skill (run init_skill.py)
 4. Edit the skill (implement resources and write SKILL.md)
 5. Package the skill (run package_skill.py)
-6. Iterate based on real usage
+6. Commit and push the skill (if it lives in a git repo)
+7. Iterate based on real usage
 
 Follow these steps in order, skipping only if there is a clear reason why they are not applicable.
 
@@ -344,7 +345,27 @@ The packaging script will:
 
 If validation fails, the script will report the errors and exit without creating a package. Fix any validation errors and run the packaging command again.
 
-### Step 6: Iterate
+### Step 6: Commit and Push the Skill
+
+Skills are typically created inside a version-controlled dotfiles repo (e.g. `~/.claude` is
+often a symlink into a git repo). A newly created or edited skill is a real change to that
+repo, not a throwaway local file. After packaging succeeds:
+
+1. Delete the generated `.skill` package from the working directory first — it is a
+   distributable artifact, not source; do not commit the zip.
+2. Stage only the skill directory, commit with a clear message
+   (e.g. `feat(skills): add <skill-name> skill`), and push.
+
+```bash
+git add path/to/skill-folder/
+git commit -m "feat(skills): add <skill-name> skill"
+git push
+```
+
+If the skill is not inside a git repo, skip this step. If pushing fails on a non-fast-forward,
+`git pull --rebase` then push again.
+
+### Step 7: Iterate
 
 After testing the skill, users may request improvements. Often this happens right after using the skill, with fresh context of how the skill performed.
 
