@@ -233,11 +233,12 @@ def split_and_write(md, slug, vault):
         else: cur['body'].append(l)
     secs.append(cur)
     DATE = re.compile(r'^(20\d\d)-(\d\d)-\d\d')
-    months = {}; topics = []; rolling = []; used = set()
+    MONTH = re.compile(r'^(20\d\d)-(\d\d)(?!\d)')   # bare YYYY-MM heading -> same month bucket
+    months = {}; topics = []; rolling = []
     for s in secs:
         t, body = s['title'], s['body']
         if t is None: rolling += body; continue
-        m = DATE.match(t)
+        m = DATE.match(t) or MONTH.match(t)
         if m: months.setdefault(f'{m.group(1)}-{m.group(2)}', []).append((t, body))
         else: topics.append((t, body))
     trim = lambda x: x.strip('\n')
@@ -247,6 +248,7 @@ def split_and_write(md, slug, vault):
             o += [f'## {t}', trim('\n'.join(body)), '']
         open(f'{srcdir}/{mo}.md', 'w').write('\n'.join(o).rstrip() + '\n')
     topic_files = []
+    used = set(months.keys()) | {slug}        # never collide with month files or the index
     for t, body in topics:
         sl = slugify(t); base = sl; k = 2
         while sl in used: sl = f'{base}-{k}'; k += 1
