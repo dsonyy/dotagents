@@ -35,7 +35,13 @@ link .claude/settings.json   "$HOME/.claude/settings.json"
 link .claude/agents          "$HOME/.claude/agents"
 link .claude/hooks           "$HOME/.claude/hooks"
 link .claude/sounds          "$HOME/.claude/sounds"
-link .claude/.caveman-active "$HOME/.claude/.caveman-active"
+
+# Caveman default mode (version-controlled). Do NOT symlink the runtime flag
+# ~/.claude/.caveman-active — caveman refuses symlinked flags in both its write
+# guard and statusline read guard, which silently kills the badge and mode
+# switching. The flag is hook-owned state; we version-control the *default mode*
+# via config.json instead (no symlink guard there).
+link config/caveman/config.json "$HOME/.config/caveman/config.json"
 
 # --- codex-specific ---
 # (none authored yet; add .codex/agents/*.toml, .codex/prompts/*.md here later)
