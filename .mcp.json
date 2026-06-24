@@ -43,6 +43,10 @@
         "ES_URL": "${ES_URL}",
         "ES_API_KEY": "${ES_API_KEY}"
       }
+    },
+    "Tactiq": {
+      "type": "http",
+      "url": "https://mcp.tactiq.io"
     }
   }
 }
