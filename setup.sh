@@ -50,6 +50,13 @@ fi
 # micro
 sudo apt install -y micro
 
+# vscode
+if ! dpkg -l | grep -q "^ii  code " &> /dev/null; then
+    sudo curl -fsSLo /usr/share/keyrings/microsoft.asc https://packages.microsoft.com/keys/microsoft.asc
+    echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft.asc] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list
+    sudo apt update && sudo apt install -y code
+fi
+
 # keepassxc
 if ! dpkg -l | grep keepassxc &> /dev/null; then
     sudo apt -y install keepassxc
@@ -79,9 +86,13 @@ if ! dpkg -l | grep -q claude-desktop &> /dev/null; then
     sudo apt update && sudo apt install claude-desktop
 fi
 
+# claude code
+curl -fsSL https://claude.ai/install.sh | bash
+
+# codex
+curl -fsSL https://chatgpt.com/codex/install.sh | bash
 
 ############## SETUP
-
 
 export DOTFILES=$HOME/repos/dotfiles
 
