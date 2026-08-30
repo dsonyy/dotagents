@@ -54,6 +54,13 @@ if ! snap list | grep obsidian &> /dev/null; then
     snap install obsidian --classic
 fi
 
+# keepassxc
+if ! dpkg -l | grep tailscale &> /dev/null; then
+	curl -fsSL https://tailscale.com/install.sh | sh
+	sudo tailscale up
+fi
+
+
 # spotify
 if ! snap list | grep spotify &> /dev/null; then
     snap install spotify

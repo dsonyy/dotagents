@@ -91,11 +91,10 @@ export LANG=en_US.UTF-8
 
 # micro 
 export EDITOR=micro
-export VISUAL=micro
 
 # aliases
-alias repos="cd /mnt/x/repos"
-alias gdrive="cd /mnt/x/"
+alias repos="cd ~/repos"
+alias brain="cd ~/brain"
 
 # tmux - attach to the running server, restoring the last saved session first
 if [[ -o interactive ]] && [[ -z "$TMUX" ]] && command -v tmux >/dev/null 2>&1; then
