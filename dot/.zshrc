@@ -70,13 +70,28 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git z sudo command-not-found colored-man-pages docker docker-compose terraform tmux zsh-autosuggestions zsh-syntax-highlighting web-search)
+plugins=(
+	git
+	z 
+	sudo 
+	command-not-found 
+	colored-man-pages 
+	docker docker-compose 
+	terraform 
+	zsh-autosuggestions 
+	zsh-syntax-highlighting
+	web-search
+)
 
 # oh-my-zsh
 source $ZSH/oh-my-zsh.sh
 
 # l11n
 export LANG=en_US.UTF-8
+
+# micro 
+export EDITOR=micro
+export VISUAL=micro
 
 # aliases
 alias repos="cd /mnt/x/repos"

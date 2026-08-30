@@ -1,0 +1,15 @@
+[user]
+    name = Szymon Bednorz
+    email = dsonyyy@gmail.com
+
+[core]
+    editor = micro
+
+[init]
+    defaultBranch = main
+
+[pull]
+    rebase = true
+
+[color]
+    ui = auto
