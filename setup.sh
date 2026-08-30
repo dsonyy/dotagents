@@ -4,7 +4,13 @@
 # google chrome
 
 # core
-sudo apt install -y curl wget git
+sudo apt install -y curl wget git htop
+
+# ssh
+if ! dpkg -l | grep openssh-server &> /dev/null; then
+	sudo apt install -y openssh-server
+	sudo systemctl enable --now ssh
+fi
 
 # zsh
 sudo apt install -y zsh
