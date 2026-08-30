@@ -92,6 +92,10 @@ export LANG=en_US.UTF-8
 # micro 
 export EDITOR=micro
 
+# history
+HISTSIZE=100000
+SAVEHIST=100000
+
 # aliases
 alias repos="cd ~/repos"
 alias brain="cd ~/brain"
