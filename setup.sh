@@ -92,6 +92,16 @@ curl -fsSL https://claude.ai/install.sh | bash
 # codex
 curl -fsSL https://chatgpt.com/codex/install.sh | bash
 
+# opencode
+curl -fsSL https://opencode.ai/install | bash
+
+# handy
+if ! command -v handy &> /dev/null; then
+    URL=$(curl -s https://api.github.com/repos/cjpais/Handy/releases/latest | grep -o https://[^\"]*amd64\\.deb | head -1)
+    curl -fsSL $URL -o /tmp/handy.deb
+    sudo apt install -y /tmp/handy.deb && rm /tmp/handy.deb
+fi
+
 ############## SETUP
 
 export DOTFILES=$HOME/repos/dotfiles

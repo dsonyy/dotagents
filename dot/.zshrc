@@ -114,3 +114,6 @@ if [[ -o interactive ]] && [[ -z "$TMUX" ]] && command -v tmux >/dev/null 2>&1; 
         tmux attach
     fi
 fi
+
+# opencode
+export PATH=/home/dsonyy/.opencode/bin:$PATH
