@@ -1,21 +1,5 @@
 {
   "mcpServers": {
-    "betterstack": {
-      "type": "http",
-      "url": "https://mcp.betterstack.com"
-    },
-    "linear": {
-      "type": "http",
-      "url": "https://mcp.linear.app/mcp"
-    },
-    "sentry": {
-      "type": "http",
-      "url": "https://mcp.sentry.dev/mcp"
-    },
-    "clickup": {
-      "type": "http",
-      "url": "https://mcp.clickup.com/mcp"
-    },
     "github": {
       "type": "http",
       "url": "https://api.githubcopilot.com/mcp",
@@ -23,26 +7,11 @@
         "Authorization": "Bearer ${GITHUB_PAT}"
       }
     },
-    "auth0": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "@auth0/auth0-mcp-server", "run"],
-      "env": {}
-    },
     "chrome-devtools": {
       "type": "stdio",
       "command": "npx",
       "args": ["-y", "chrome-devtools-mcp@latest", "--no-usage-statistics"],
       "env": {}
-    },
-    "elasticsearch": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "@elastic/mcp-server-elasticsearch"],
-      "env": {
-        "ES_URL": "${ES_URL}",
-        "ES_API_KEY": "${ES_API_KEY}"
-      }
     },
     "Tactiq": {
       "type": "http",

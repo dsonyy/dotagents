@@ -1,6 +1,6 @@
 ---
 name: gdoc-to-obsidian
-description: Migrate a Google Docs export (HTML + images, optionally from a .zip) into a clean Obsidian markdown vault. Produces a flat per-month + per-topic file layout, strips Google export artifacts, maps rich formatting (font color, highlight, bold/italic/strikethrough, code) to Obsidian-supported markdown, and stores all images in one root /assets folder. Use when the user wants to import, migrate, or convert a Google Doc (or a doc exported as "Web Page" .html/.zip) into Obsidian/markdown, especially dated work logs, journals, or multi-tab specs.
+description: Migrate a Google Docs export (HTML + images, optionally from a .zip) into a clean Obsidian markdown vault.
 ---
 
 # Google Doc → Obsidian migration
@@ -12,6 +12,7 @@ workflow around it and the one judgment step (topic grouping).
 ## Workflow
 
 ### 1. Get the export (user action — cannot be skipped)
+
 The Drive API / MCP export caps at **10 MB**, so large (image-heavy) docs cannot be
 pulled programmatically. The user downloads it from the browser (no size limit):
 
@@ -27,9 +28,11 @@ the active tab; if so, have the user re-export as **.docx** (also all-tabs + ima
 and convert with `pandoc -f docx --extract-media` instead.
 
 ### 2. Run the migration
+
 ```bash
 python3 scripts/migrate.py --html <path/to/export.html> --slug <name> --vault <vault-root>
 ```
+
 - `--slug` = short source name (e.g. `techtree`); becomes the source folder name and the
   image filename prefix.
 - `images/` must sit next to the `.html`.
@@ -37,6 +40,7 @@ python3 scripts/migrate.py --html <path/to/export.html> --slug <name> --vault <v
   on PATH (no root needed).
 
 Output (flat) under `<vault>/sources/<slug>/`:
+
 - `YYYY-MM.md` — one per month; dated entries become `## YYYY-MM-DD`.
 - `<Topic name>.md` — one per non-date top-level `#` section. Filenames are **Sentence case**,
   taken from the heading text (real casing preserved; filesystem/wikilink-safe).
@@ -47,8 +51,10 @@ Filename convention: months stay numeric `YYYY-MM` (sortable); everything else i
 case for readability. Keep this consistent across imports.
 
 ### 3. Review + group topics (judgment step)
+
 The script emits **one topic file per top-level `#` heading**, which often over-fragments
 (e.g. a "Security" spec split into "CSRF", "reCAPTCHA", "Inicjalizacja"…). After running:
+
 1. List the generated non-date (topic) files.
 2. With the user, **merge fragments into coherent themes** (concatenate related files into one,
    fix index links). This needs human judgment about what belongs together — propose a grouping
@@ -60,6 +66,7 @@ The script emits **one topic file per top-level `#` heading**, which often over-
 **Layout:** flat (no nested `daily/`/`topics/` dirs); one shared root `assets/`.
 
 **Formatting → Obsidian:**
+
 - bold/italic/strikethrough → `**`, `*`, `~~`
 - font color → `<span style="color:#hex">…</span>` (Obsidian renders inline HTML)
 - highlight → `==…==` (yellow) or `<span style="background-color:#hex;color:#111827">…</span>`
@@ -72,13 +79,16 @@ wrappers, leftover Google CSS classes/styles/anchors, pandoc `<!-- -->` list sep
 Near-black greys and default link-blue are treated as plain text, not emphasis.
 
 ## Conventions (consistency across imports)
+
 - `sources/` is a **faithful archive** — keep the original `.html` if the user wants a frozen
   copy; cross-source reorganization belongs in a separate `wiki/` layer, not here.
 - Always prefix asset filenames with the slug (collision-safe in one shared `/assets`).
 - Prefer Obsidian embeds `![[name]]` (resolve by filename anywhere) over relative paths.
 
 ## Tuning the script
+
 Edit `scripts/migrate.py` for source-specific cases:
+
 - `MONO` / `DARKBG` — font-families / backgrounds that mark code blocks.
 - `LINKBLUE` — color shades treated as default hyperlink color (not emphasis).
 - code-detection thresholds and the SQL/JSON fence heuristic (`SQL`, `codeish`).

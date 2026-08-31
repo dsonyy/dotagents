@@ -1,21 +1,11 @@
 ---
-name: explain
+name: concept-explaining
 description: Explain the current state of the conversation, codebase area, or feature with concise structured output
 ---
 
 # Explain
 
-Explain what's going on — in the current conversation, a feature, or an area of the codebase.
-
-## Usage
-
-```
-/explain
-/explain what does the audit pipeline do
-/explain how does onboarding work
-```
-
-When invoked without arguments, explain the current conversation state: what was discussed, what was decided, what's pending.
+Explain what's going on - in the current conversation, a feature, or an area of the codebase.
 
 ## Output Format
 
