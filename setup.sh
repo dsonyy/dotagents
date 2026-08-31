@@ -102,6 +102,9 @@ if ! command -v handy &> /dev/null; then
     sudo apt install -y /tmp/handy.deb && rm /tmp/handy.deb
 fi
 
+# treehouse - https://github.com/kunchenguid/treehouse
+curl -fsSL https://kunchenguid.github.io/treehouse/install.sh | sh
+
 ############## SETUP
 
 export DOTFILES=$HOME/repos/dotfiles
