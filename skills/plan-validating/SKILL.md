@@ -1,5 +1,5 @@
 ---
-name: validate_plan
+name: plan-validating
 description: Validate that an implementation plan was correctly executed
 ---
 

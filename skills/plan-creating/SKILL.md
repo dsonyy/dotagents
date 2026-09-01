@@ -1,5 +1,5 @@
 ---
-name: creating-plan
+name: plan-creating
 description: Create detailed implementation plans through an interactive, iterative process
 ---
 

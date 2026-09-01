@@ -113,6 +113,12 @@ fi
 	&& sudo apt update \
 	&& sudo apt install gh -y
 
+# nvm / node / npm
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.7/install.sh | bash
+source ~/.zshrc
+nvm install 24
+
+
 ############## SETUP
 
 export DOTFILES=$HOME/repos/dotfiles
