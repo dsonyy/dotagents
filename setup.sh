@@ -1,27 +1,30 @@
+#!/usr/bin/env bash
+
+step() { printf '\033[35m%s\033[0m\n' "$1"; }
 
 ############## INSTALLATION
 
 # google chrome
 
-# core
+step "core"
 sudo apt install -y curl wget git htop
 
-# ssh
+step "ssh"
 if ! dpkg -l | grep openssh-server &> /dev/null; then
 	sudo apt install -y openssh-server
 	sudo systemctl enable --now ssh
 fi
 
-# zsh
+step "zsh"
 sudo apt install -y zsh
 chsh -s $(which zsh)
 
-# oh-my-zsh
+step "oh-my-zsh"
 if ! [ -d "$HOME/.oh-my-zsh" ]; then
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 fi
 
-# oh-my-zsh plugins
+step "oh-my-zsh plugins"
 if ! [ -d "$HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions" ]; then
     git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 fi
@@ -29,80 +32,79 @@ if ! [ -d "$HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting" ]; then
     git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 fi
 
-# tmux
+step "tmux"
 sudo apt install tmux
 
-# tmux plugin manager
+step "tmux plugin manager"
 if ! [ -d "$HOME/.tmux/plugins/tpm" ]; then
     git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 fi
 
-# tmux - install plugins
+step "tmux plugins"
 $HOME/.tmux/plugins/tpm/bin/install_plugins
 
-# tmux - create initial main session and save it
+step "tmux main session"
 if [ ! -e "$HOME/.local/share/tmux/resurrect/last" ] && [ ! -e "$HOME/.tmux/resurrect/last" ]; then
     tmux new-session -d -s main
     tmux run-shell "$HOME/.tmux/plugins/tmux-resurrect/scripts/save.sh"
     tmux kill-session -t main
 fi
 
-# micro
+step "micro"
 sudo apt install -y micro
 
-# vscode
+step "vscode"
 if ! dpkg -l | grep -q "^ii  code " &> /dev/null; then
     sudo curl -fsSLo /usr/share/keyrings/microsoft.asc https://packages.microsoft.com/keys/microsoft.asc
     echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft.asc] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list
     sudo apt update && sudo apt install -y code
 fi
 
-# keepassxc
+step "keepassxc"
 if ! dpkg -l | grep keepassxc &> /dev/null; then
     sudo apt -y install keepassxc
 fi
 
-# obsidian
+step "obsidian"
 if ! snap list | grep obsidian &> /dev/null; then
     snap install obsidian --classic
 fi
 
-# keepassxc
+step "tailscale"
 if ! dpkg -l | grep tailscale &> /dev/null; then
 	curl -fsSL https://tailscale.com/install.sh | sh
 	sudo tailscale up
 fi
 
-
-# spotify
+step "spotify"
 if ! snap list | grep spotify &> /dev/null; then
     snap install spotify
 fi
 
-# claude desktop
+step "claude desktop"
 if ! dpkg -l | grep -q claude-desktop &> /dev/null; then
     sudo curl -fsSLo /usr/share/keyrings/claude-desktop-archive-keyring.asc https://downloads.claude.ai/claude-desktop/key.asc
-    echo "deb [signed-by=/usr/share/keyrings/claude-desktop-archive-keyring.asc] https://downloads.claude.ai/claude-desktop/apt/stable stable main" | sudo tee /etc/apt/sources.list.d/claude-desktop.list
+    echo "deb [arch=amd64 signed-by=/usr/share/keyrings/claude-desktop-archive-keyring.asc] https://downloads.claude.ai/claude-desktop/apt/stable stable main" | sudo tee /etc/apt/sources.list.d/claude-desktop.list
     sudo apt update && sudo apt install claude-desktop
 fi
 
-# claude code
+step "claude code"
 curl -fsSL https://claude.ai/install.sh | bash
 
-# codex
+step "codex"
 curl -fsSL https://chatgpt.com/codex/install.sh | bash
 
-# opencode
+step "opencode"
 curl -fsSL https://opencode.ai/install | bash
 
-# handy
+step "handy"
 if ! command -v handy &> /dev/null; then
     URL=$(curl -s https://api.github.com/repos/cjpais/Handy/releases/latest | grep -o https://[^\"]*amd64\\.deb | head -1)
     curl -fsSL $URL -o /tmp/handy.deb
     sudo apt install -y /tmp/handy.deb && rm /tmp/handy.deb
 fi
 
-# github
+step "github cli"
 (type -p wget >/dev/null || (sudo apt update && sudo apt install wget -y)) \
 	&& sudo mkdir -p -m 755 /etc/apt/keyrings \
 	&& out=$(mktemp) && wget -nv -O$out https://cli.github.com/packages/githubcli-archive-keyring.gpg \
@@ -113,32 +115,33 @@ fi
 	&& sudo apt update \
 	&& sudo apt install gh -y
 
-# nvm / node / npm
+step "nvm / node / npm"
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.7/install.sh | bash
-source ~/.zshrc
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 nvm install 24
 
 
 ############## SETUP
 
 export DOTFILES=$HOME/repos/dotfiles
-export CONFIGS=$HOME/repos/config
 
-# clone dotfiles
+step "clone dotfiles"
 if [ ! -d $DOTFILES ]; then
     mkdir -p ~/repos
     cd ~/repos
     git clone git@github.com:dsonyy/dotfiles.git
 fi
 
-# setup dot symlinks to ~
+step "dot symlinks"
 for f in "$DOTFILES"/dot/.[!.]* "$DOTFILES"/dot/*; do
     [ -e "$f" ] || continue
     ln -sf "$f" "$HOME/$(basename "$f")"
 done
 
-echo OK
+step "agents"
+mkdir -p $HOME/.claude
+ln -sf $DOTFILES/config/AGENTS.md $HOME/.claude/CLAUDE.md
+ln -sfn $DOTFILES/skills $HOME/.claude/skills
 
-
-#### AGENTS 
-ln -sf $CONFIGS/AGENTS.md $HOME/.claude/CLAUDE.md
+step "DONE"
