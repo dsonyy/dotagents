@@ -139,9 +139,16 @@ for f in "$DOTFILES"/dot/.[!.]* "$DOTFILES"/dot/*; do
     ln -sf "$f" "$HOME/$(basename "$f")"
 done
 
-step "agents"
+step "claude code - symlinks"
 mkdir -p $HOME/.claude
 ln -sf $DOTFILES/config/AGENTS.md $HOME/.claude/CLAUDE.md
 ln -sfn $DOTFILES/skills $HOME/.claude/skills
+
+step "codex - symlinks"
+mkdir -p "$HOME/.codex"
+ln -sfnT "$CONFIGS/AGENTS.md" "$HOME/.codex/AGENTS.md"
+mkdir -p "$HOME/.agents"
+ln -sfnT "$DOTFILES/skills" "$HOME/.agents/skills"
+
 
 step "DONE"
