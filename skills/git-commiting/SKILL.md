@@ -27,3 +27,4 @@ Format: `<type>[optional scope]: <description>`
 - Body: use when the why isn't obvious from the description; blank line after subject
 - No emoji. No "this commit". No filler words.
 - No `Co-Authored-By` trailer. Ever.
+- Prefer multiple smaller commits if the scope is easy to separate; one larger otherwise.
