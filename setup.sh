@@ -122,6 +122,7 @@ nvm install 24
 ############## SETUP
 
 export DOTFILES=$HOME/repos/dotfiles
+export CONFIGS=$HOME/repos/config
 
 # clone dotfiles
 if [ ! -d $DOTFILES ]; then
@@ -137,3 +138,7 @@ for f in "$DOTFILES"/dot/.[!.]* "$DOTFILES"/dot/*; do
 done
 
 echo OK
+
+
+#### AGENTS 
+ln -sf $CONFIGS/AGENTS.md $HOME/.claude/CLAUDE.md
