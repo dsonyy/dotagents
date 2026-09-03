@@ -108,11 +108,7 @@ if [[ -o interactive ]] && [[ -z "$TMUX" ]] && command -v tmux >/dev/null 2>&1; 
         [ "$(tmux list-sessions | wc -l)" -gt 1 ] && tmux kill-session -t __bootstrap
     fi
 
-    if [ -n "$SSH_CONNECTION" ]; then
-        tmux new-session -A -s remote
-    else
-        tmux attach
-    fi
+    tmux attach -t main
 fi
 
 # opencode
