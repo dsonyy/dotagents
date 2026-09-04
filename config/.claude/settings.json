@@ -1,0 +1,49 @@
+{
+  "theme": "dark",
+  "model": "opus",
+  "skipDangerousModePermissionPrompt": true,
+  "permissions": {
+    "allow": [
+      "Bash",
+      "Read",
+      "Write",
+      "Edit",
+      "WebFetch",
+      "WebSearch",
+      "Skill",
+      "mcp__sentry__*",
+      "mcp__linear__*",
+      "mcp__github__*",
+      "mcp__db__*",
+      "mcp__chrome-devtools__*",
+      "mcp__betterstack__*",
+      "mcp__claude_ai_Atlassian__*",
+      "mcp__claude_ai_Excalidraw__*",
+      "mcp__microsoft-azure__*",
+      "mcp__elasticsearch__*"
+    ],
+    "deny": [],
+    "ask": []
+  },
+  "voice": {
+    "enabled": true,
+    "mode": "hold"
+  },
+  "voiceEnabled": true,
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 $HOME/repos/dotfiles/config/sounds/play.py"
+          }
+        ]
+      }
+    ]
+  },
+  "env": {
+    "CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION": "2000"
+  }
+}

@@ -143,6 +143,8 @@ step "claude code - symlinks"
 mkdir -p $HOME/.claude
 ln -sf $DOTFILES/config/AGENTS.md $HOME/.claude/CLAUDE.md
 ln -sfn $DOTFILES/skills $HOME/.claude/skills
+ln -sfnT $DOTFILES/config/.claude/agents $HOME/.claude/agents
+ln -sfnT $DOTFILES/config/.claude/settings.json $HOME/.claude/settings.json
 
 step "codex - symlinks"
 mkdir -p "$HOME/.codex"
@@ -156,7 +158,7 @@ ln -sfnT "$DOTFILES/lessons" "$HOME/lessons"
 
 step "verify agent symlinks"
 broken=0
-for link in "$HOME/.claude/CLAUDE.md" "$HOME/.claude/skills" "$HOME/.codex/AGENTS.md" "$HOME/.agents/skills" "$HOME/lessons"; do
+for link in "$HOME/.claude/CLAUDE.md" "$HOME/.claude/skills" "$HOME/.claude/agents" "$HOME/.claude/settings.json" "$HOME/.codex/AGENTS.md" "$HOME/.agents/skills" "$HOME/lessons"; do
     if [ ! -e "$link" ]; then
         printf '\033[31mBROKEN: %s -> %s\033[0m\n' "$link" "$(readlink "$link")"
         broken=1
