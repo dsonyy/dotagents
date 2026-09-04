@@ -1,7 +1,0 @@
-- `AGENTS.md` --> `~/.claude/CLAUDE.md` and `~/.codex/AGENTS.md`
-- `skills/*` --> `~/.claude/skills/*` and `~/.codex/skills/*`
-- `.claude/settings.json` --> `~/.claude/settings.json`
-- `.claude/agents` --> `~/.claude/agents`
-- `.claude/hooks` --> `~/.claude/hooks`
-- `.claude/sounds` --> `~/.claude/sounds`
-- `config/caveman/config.json` --> `~/.config/caveman/config.json` (caveman default mode; the runtime flag `~/.claude/.caveman-active` is hook-owned and must not be symlinked)
