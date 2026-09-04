@@ -1,9 +1,5 @@
 {
-  "theme": "dark",
-  "model": "opus",
-  "skipDangerousModePermissionPrompt": true,
   "permissions": {
-    "defaultMode": "bypassPermissions",
     "allow": [
       "Bash",
       "Read",
@@ -26,11 +22,8 @@
     "deny": [],
     "ask": []
   },
-  "voice": {
-    "enabled": true,
-    "mode": "hold"
-  },
-  "voiceEnabled": true,
+  "model": "opus",
+  "enableAllProjectMcpServers": true,
   "hooks": {
     "Notification": [
       {
@@ -44,7 +37,11 @@
       }
     ]
   },
-  "env": {
-    "CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION": "2000"
-  }
+  "voice": {
+    "enabled": true,
+    "mode": "hold"
+  },
+  "skipDangerousModePermissionPrompt": true,
+  "theme": "dark",
+  "voiceEnabled": true
 }
