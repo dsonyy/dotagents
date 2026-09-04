@@ -1,9 +1,9 @@
 ---
-name: concept-explaining
+name: conversation-explaining
 description: Explain the current state of the conversation, codebase area, or feature with concise structured output
 ---
 
-# Explain
+# Conversation Explaining
 
 Explain what's going on - in the current conversation, a feature, or an area of the codebase.
 
