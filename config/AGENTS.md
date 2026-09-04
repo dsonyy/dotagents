@@ -8,6 +8,18 @@
 - NEVER auto-add your agent name as co-author, when writing commit messages, PRs and other deliverables
 - Never hard-code user-facing strings or design-system colors.
 
+## Ask First
+
+Stop and ask before any of these, however confident you are. They are triggers, not judgement calls.
+
+- Adding a production dependency.
+- Changing a public contract: API shape, exported signature, config key, CLI flag, event payload.
+- Destructive git: force push, `reset --hard`, deleting a branch, rewriting pushed history.
+- Applying migrations, resetting or reseeding a database.
+- Touching credentials, live services, or anything outside the working directory.
+- Widening scope past what was asked, or narrowing it because a part turned out to be hard.
+- Resolving a conflict between these instructions and any other source. Surface it, do not arbitrate.
+
 ## Writing
 
 - Don't over-weight development cost in technical decisions. Do not underestimate AI coding speed nowadays.
@@ -30,14 +42,9 @@
   - No error handling for impossible scenarios.
   - If you write 200 lines and it could be 50, rewrite it.
   - No comments. Code is the spec. Only annotate genuinely non-obvious logic - never _what_ the code does.
-- Before any engineering decisions or implementation:
-  - Don't assume. Don't hide confusion. Surface tradeoffs.
-  - State your assumptions explicitly. If uncertain, ask.
-  - If multiple interpretations exist, present them - don't pick silently.
-  - If a simpler approach exists, say so. Push back when warranted.
-  - If something is unclear, stop. Name what's confusing. Ask.
-  - Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
-  - No Laziness: Find root causes. No temporary fixes. Senior developer standards.
+- If a simpler approach exists, say so. Push back when warranted.
+- Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
+- No Laziness: Find root causes. No temporary fixes. Senior developer standards.
 
 ## Workflow orchestration
 
