@@ -151,4 +151,17 @@ mkdir -p "$HOME/.agents"
 ln -sfnT "$DOTFILES/skills" "$HOME/.agents/skills"
 
 
+step "lessons - symlink"
+ln -sfnT "$DOTFILES/lessons" "$HOME/lessons"
+
+step "verify agent symlinks"
+broken=0
+for link in "$HOME/.claude/CLAUDE.md" "$HOME/.claude/skills" "$HOME/.codex/AGENTS.md" "$HOME/.agents/skills" "$HOME/lessons"; do
+    if [ ! -e "$link" ]; then
+        printf '\033[31mBROKEN: %s -> %s\033[0m\n' "$link" "$(readlink "$link")"
+        broken=1
+    fi
+done
+[ "$broken" -eq 0 ] && echo "all agent symlinks resolve"
+
 step "DONE"

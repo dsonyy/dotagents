@@ -29,7 +29,7 @@
   - No "flexibility" or "configurability" that wasn't requested.
   - No error handling for impossible scenarios.
   - If you write 200 lines and it could be 50, rewrite it.
-  - No comments. Code is the spec. Only annotate genuinely non-obvious logic — never _what_ the code does.
+  - No comments. Code is the spec. Only annotate genuinely non-obvious logic - never _what_ the code does.
 - Before any engineering decisions or implementation:
   - Don't assume. Don't hide confusion. Surface tradeoffs.
   - State your assumptions explicitly. If uncertain, ask.
@@ -46,3 +46,11 @@
 - Verification: Run tests, check build, suggest user verification. Ask: "Would a staff engineer approve this?"
 - Elegance: For non-trivial changes, pause and ask "is there a more elegant way?" Skip for simple fixes.
 - Autonomous bug fixing: When given a bug report, just fix it. Point at logs/errors, then resolve. Zero hand-holding.
+
+## Lessons
+
+`~/lessons/index.md` catalogs durable rules learned from past failures - global and OS-level, not project-scoped.
+
+- Before non-trivial work: scan the index rows for tags matching the task and open only those records. Never read `~/lessons/records/` wholesale.
+- After a correction that generalizes beyond the file it happened in: add one record plus its index row, or update an existing record, then run `python3 ~/lessons/check.py`.
+- Preferences and always-true rules belong in this file instead. If you cannot write a real Context incident, it is not a lesson.
