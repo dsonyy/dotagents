@@ -20,7 +20,8 @@
       "mcp__elasticsearch__*"
     ],
     "deny": [],
-    "ask": []
+    "ask": [],
+    "defaultMode": "bypassPermissions"
   },
   "model": "opus",
   "enableAllProjectMcpServers": true,
