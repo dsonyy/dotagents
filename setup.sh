@@ -146,7 +146,7 @@ ln -sfn $DOTFILES/skills $HOME/.claude/skills
 
 step "codex - symlinks"
 mkdir -p "$HOME/.codex"
-ln -sfnT "$CONFIGS/AGENTS.md" "$HOME/.codex/AGENTS.md"
+ln -sfnT "$DOTFILES/config/AGENTS.md" "$HOME/.codex/AGENTS.md"
 mkdir -p "$HOME/.agents"
 ln -sfnT "$DOTFILES/skills" "$HOME/.agents/skills"
 
