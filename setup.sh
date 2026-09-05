@@ -146,11 +146,25 @@ ln -sfn $DOTFILES/skills $HOME/.claude/skills
 ln -sfnT $DOTFILES/config/.claude/agents $HOME/.claude/agents
 ln -sfnT $DOTFILES/config/.claude/settings.json $HOME/.claude/settings.json
 
+step "claude code - plugins"
+claude plugin marketplace add "$DOTFILES/config"
+for p in "$DOTFILES"/config/plugins/*; do
+    [ -d "$p" ] || continue
+    claude plugin install "$(basename "$p")@dsonyy"
+done
+
 step "codex - symlinks"
 mkdir -p "$HOME/.codex"
 ln -sfnT "$DOTFILES/config/AGENTS.md" "$HOME/.codex/AGENTS.md"
 mkdir -p "$HOME/.agents"
 ln -sfnT "$DOTFILES/skills" "$HOME/.agents/skills"
+
+step "codex - plugins"
+codex plugin marketplace add "$DOTFILES/config"
+for p in "$DOTFILES"/config/plugins/*; do
+    [ -d "$p" ] || continue
+    codex plugin add "$(basename "$p")@dsonyy"
+done
 
 
 step "lessons - symlink"

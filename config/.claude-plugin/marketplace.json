@@ -1,0 +1,8 @@
+{
+  "name": "dsonyy",
+  "description": "Vendored agent plugins from dotfiles",
+  "owner": { "name": "dsonyy" },
+  "plugins": [
+    { "name": "ponytail", "source": "./plugins/ponytail" }
+  ]
+}

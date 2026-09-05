@@ -25,6 +25,17 @@
   },
   "model": "opus",
   "enableAllProjectMcpServers": true,
+  "extraKnownMarketplaces": {
+    "dsonyy": {
+      "source": {
+        "source": "directory",
+        "path": "/home/dsonyy/repos/dotfiles/config"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "ponytail@dsonyy": true
+  },
   "hooks": {
     "Notification": [
       {
@@ -32,11 +43,15 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 $HOME/repos/dotfiles/config/sounds/play.py"
+            "command": "python3 $HOME/repos/dotfiles/config/hooks/play.py"
           }
         ]
       }
     ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash \"$HOME/repos/dotfiles/config/plugins/ponytail/hooks/ponytail-statusline.sh\""
   },
   "voice": {
     "enabled": true,
