@@ -76,6 +76,11 @@ if ! dpkg -l | grep tailscale &> /dev/null; then
 	sudo tailscale up
 fi
 
+step "ollama"
+if ! command -v ollama &> /dev/null; then
+    curl -fsSL https://ollama.com/install.sh | sh
+fi
+
 step "spotify"
 if ! snap list | grep spotify &> /dev/null; then
     snap install spotify
