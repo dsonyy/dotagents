@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "tactiq": {
+      "type": "http",
+      "url": "https://mcp.tactiq.io"
+    }
+  }
+}

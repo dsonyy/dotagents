@@ -1,4 +1,7 @@
 {
+  "env": {
+    "CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION": "2000"
+  },
   "permissions": {
     "allow": [
       "Bash",
@@ -17,25 +20,15 @@
       "mcp__claude_ai_Atlassian__*",
       "mcp__claude_ai_Excalidraw__*",
       "mcp__microsoft-azure__*",
-      "mcp__elasticsearch__*"
+      "mcp__elasticsearch__*",
+      "mcp__tactiq__*"
     ],
     "deny": [],
     "ask": [],
     "defaultMode": "bypassPermissions"
   },
-  "model": "opus",
+  "model": "sonnet",
   "enableAllProjectMcpServers": true,
-  "extraKnownMarketplaces": {
-    "dsonyy": {
-      "source": {
-        "source": "directory",
-        "path": "/home/dsonyy/repos/dotfiles/config"
-      }
-    }
-  },
-  "enabledPlugins": {
-    "ponytail@dsonyy": true
-  },
   "hooks": {
     "Notification": [
       {
@@ -53,14 +46,23 @@
     "type": "command",
     "command": "bash \"$HOME/repos/dotfiles/config/plugins/ponytail/hooks/ponytail-statusline.sh\""
   },
+  "enabledPlugins": {
+    "ponytail@dsonyy": true,
+    "mcps@dsonyy": true
+  },
+  "extraKnownMarketplaces": {
+    "dsonyy": {
+      "source": {
+        "source": "directory",
+        "path": "/home/dsonyy/repos/dotfiles/config"
+      }
+    }
+  },
   "voice": {
     "enabled": true,
     "mode": "hold"
   },
   "skipDangerousModePermissionPrompt": true,
   "theme": "dark",
-  "voiceEnabled": true,
-  "env": {
-    "CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION": "2000"
-  }
+  "voiceEnabled": true
 }
